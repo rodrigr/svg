@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+		}
+
+		#test{
+			width: 100vw;
+			height: 80vh;
+		}
+
+		.polygon{
+			stroke: white;
+			stroke-width: 10;
+		}
+
+		.html{
+			fill: #e44D26;
+		}
+
+		.css{
+			fill: #3c99dc;
+		}
+
+		.js{
+			fill: #f0db4f;
+		}
+	</style>
+</head>
+<body>
+	<div id="test">
+		
+	</div>
+</body>
+
+<script>
+	let wrapper = document.getElementById("test")
+
+	//SVG
+
+	let svg = document.createElementNS('http://www.w3.org/2000/svg','svg')
+	let width = wrapper.offsetWidth
+	let height = wrapper.offsetHeight
+
+	svg.setAttribute("width", width)
+	svg.setAttribute("height", height)
+
+	//HTML
+
+	let groupHTML = document.createElementNS('http://www.w3.org/2000/svg','g')
+
+	let polygonHTML = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+	polygonHTML.setAttribute("points", `0,0 0,${height} ${width * 1/2},0`);
+	polygonHTML.classList.add("html","polygon")
+
+	let imgHTML = document.createElementNS('http://www.w3.org/2000/svg','image');
+	imgHTML.setAttribute("href","html.png")
+	imgHTML.setAttribute("width", width * 1/6)
+	imgHTML.setAttribute("x", width * 1/6 - (width * 1/6)/2)
+	imgHTML.setAttribute("y", height * 1/6 - (height * 1/6)/2)
+
+	groupHTML.appendChild(polygonHTML)
+	groupHTML.appendChild(imgHTML)
+	
+	svg.appendChild(groupHTML)
+
+	//CSS
+
+	let groupCSS = document.createElementNS('http://www.w3.org/2000/svg','g')
+	
+	let polygonCSS = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+	polygonCSS.setAttribute("points", `${width * 1/2},0  0,${height} ${width * 1/2},${height} ${width},0`);
+	polygonCSS.classList.add("css","polygon")
+
+	let imgCSS = document.createElementNS('http://www.w3.org/2000/svg','image');
+	imgCSS.setAttribute("href","css.png")
+	imgCSS.setAttribute("width", width * 1/6)
+	imgCSS.setAttribute("x", width * 1/2 - (width * 1/6)/2)
+	imgCSS.setAttribute("y", height * 1/3 - (height * 1/6)/2)
+
+	groupCSS.appendChild(polygonCSS)
+	groupCSS.appendChild(imgCSS)
+
+	svg.appendChild(groupCSS)
+
+	//JS
+
+	let groupJS = document.createElementNS('http://www.w3.org/2000/svg','g')
+
+	let polygonJS = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+	polygonJS.setAttribute("points", `${width},0  ${width * 1/2},${height} ${width},${height}`);
+	polygonJS.classList.add("js","polygon")
+
+	let imgJS = document.createElementNS('http://www.w3.org/2000/svg','image');
+	imgJS.setAttribute("href","js.png")
+	imgJS.setAttribute("width", width * 1/6)
+	imgJS.setAttribute("x", width * 5/6 - (width * 1/6)/2)
+	imgJS.setAttribute("y", height * 1/2 - (height * 1/6)/2)
+
+	groupJS.appendChild(polygonJS)
+	groupJS.appendChild(imgJS)
+	
+	svg.appendChild(groupJS)
+
+
+	
+	wrapper.appendChild(svg)
+
+	let interval
+	
+
+	function growHTML(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 1/2) + counter) <= width * 2/3 ){
+				counter+= 2
+				polygonHTML.setAttribute("points",`0,0 0,${height} ${counter},${height} ${(width * 1/2) + counter},0`)
+				polygonCSS.setAttribute("points",`${(width * 1/2) + counter},0  ${counter},${height} ${width * 1/2},${height} ${width},0`)
+				polygonJS.setAttribute("points", `${width},0  ${width * 1/2},${height} ${width},${height}`);
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	function shrinkHTML(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 2/3) - counter) >= width * 1/2 ){
+				counter+= 2
+				polygonHTML.setAttribute("points",`0,0 0,${height} ${(width * 1/6) - counter},${height} ${(width * 2/3) - counter},0`)
+				polygonCSS.setAttribute("points",`${(width * 2/3) - counter},0  ${(width * 1/6) - counter},${height} ${width * 1/2},${height} ${width},0`)
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	function growCSS(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 1/2) - counter) >= width * 1/3  ){
+				counter+= 2
+				polygonCSS.setAttribute("points",`${width * 1/2 - counter},0  0,${height} ${width * 1/2 + counter},${height} ${width},0`)
+				polygonHTML.setAttribute("points",`0,0 0,${height} ${width * 1/2 - counter},0`)
+				polygonJS.setAttribute("points", `${width},0  ${width * 1/2 + counter},${height} ${width},${height}`);
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	function shrinkCSS(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 1/2) - counter) >= width * 1/3  ){
+				counter+= 2
+				polygonCSS.setAttribute("points",`${width * 1/3 + counter},0  0,${height} ${width * 2/3 - counter},${height} ${width},0`)
+				polygonHTML.setAttribute("points",`0,0 0,${height} ${width * 1/3 + counter},0`)
+				polygonJS.setAttribute("points", `${width},0  ${width * 2/3 - counter},${height} ${width},${height}`);
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	function growJS(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 1/2) - counter) >= width * 1/3  ){
+				counter+= 2
+				polygonJS.setAttribute("points", `${width},0 ${width - counter},0  ${width * 1/2 - counter},${height} ${width},${height}`);
+				polygonCSS.setAttribute("points", `${width * 1/2},0  0,${height} ${width * 1/2 - counter},${height} ${width -counter},0`);
+				polygonHTML.setAttribute("points", `0,0 0,${height} ${width * 1/2},0`);
+
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	function shrinkJS(){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		function frame(){
+			if(((width * 1/2) - counter) >= width * 1/3  ){
+				counter+= 2
+				polygonJS.setAttribute("points", `${width},0 ${width * 5/6 + counter},0  ${width * 1/3 + counter},${height} ${width},${height}`);
+				polygonCSS.setAttribute("points", `${width * 1/2},0  0,${height} ${width * 1/3 + counter},${height} ${width * 5/6 + counter},0`);
+				
+
+			}else{
+				clearInterval(interval)
+			}
+			
+		}
+	}
+
+	groupHTML.onmouseover = () => {
+		clearInterval(interval)
+		growHTML()
+	}
+	groupHTML.onmouseout = () => { 
+		clearInterval(interval)
+		shrinkHTML()
+	}
+
+	groupCSS.onmouseover = () => {
+		clearInterval(interval)
+		growCSS()
+	}
+	groupCSS.onmouseout = () => { 
+		clearInterval(interval)
+		shrinkCSS()
+	}
+
+	groupJS.onmouseover = () => {
+		clearInterval(interval)
+		growJS()
+	}
+	groupJS.onmouseout = () => { 
+		clearInterval(interval)
+		shrinkJS()
+	}
+
+</script>
+</html>
