@@ -118,6 +118,18 @@
 			clearInterval(interval)
 			growHTML(
 				html,
+				width,
+				height,
+				isMobile,
+				svg,
+				2
+				)
+		}
+
+		html.group.onmouseout = () => {
+			clearInterval(interval)
+			shrinkHTML(
+				html,
 				css,
 				js,
 				width,
@@ -127,10 +139,9 @@
 				)
 		}
 
-		html.group.onmouseout = () => {
+		html.group.onclick = () => {
 			clearInterval(interval)
-			shrinkHTML(
-				html,
+			expandHTML(html,
 				css,
 				js,
 				width,
@@ -204,6 +215,18 @@
 				)
 		}
 
+		js.group.onclick = () => {
+			clearInterval(interval)
+			expandJS(html,
+				css,
+				js,
+				width,
+				height,
+				isMobile,
+				svg
+				)
+		}
+
 	}
 
 
@@ -230,30 +253,24 @@
 
 	}
 
-	function growHTML(html,css,js,width,height,isMobile,svg){
+	function growHTML(type,width,height,isMobile,svg,step){
 		interval = setInterval(frame,5)
 		let counter = 0
 
-		svg.removeChild(html.group)
-		svg.appendChild(html.group)
+		svg.removeChild(type.group)
+		svg.appendChild(type.group)
 
 		function frame(){
 			if((((isMobile ? height : width) * 1/2) + counter) <= (isMobile ? height : width) * 2/3 ){
-				counter+= 2
+				counter+= step
 				
-				html.polygon.setAttribute("points",isMobile ?
+				type.polygon.setAttribute("points",isMobile ?
 				 `0,0 0,${height * 1/2 + counter} ${width},${counter} ${width},0`: 
 				 `0,0 0,${height} ${counter},${height} ${(width * 1/2) + counter},0`)
-				// css.polygon.setAttribute("points", isMobile ? 
-				// 	`0,${height * 1/2 + counter} ${width},${counter} ${width},${height * 1/2} 0,${height}` :
-				// 	`${(width * 1/2) + counter},0  ${counter},${height} ${width * 1/2},${height} ${width},0`)
-				// js.polygon.setAttribute("points", isMobile ? 
-				//  `0,${height} ${width},${height * 1/2}, ${width},${height}` :
-				//  `${width},0  ${width * 1/2},${height} ${width},${height}`);
 				
 				if(counter < 100){
-					html.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + counter)
-					html.img.setAttribute("height", (isMobile ? height * 1/3 : height * 1/2) + counter)
+					type.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + counter)
+					type.img.setAttribute("height", (isMobile ? height * 1/3 : height * 1/2) + counter)
 				}
 				
 			}else{
@@ -275,9 +292,6 @@
 				html.polygon.setAttribute("points",isMobile ? 
 					`0,0 0,${height * 2/3 - counter} ${width},${height * 1/6 - counter} ${width},0`:
 					`0,0 0,${height} ${(width * 1/6) - counter},${height} ${(width * 2/3) - counter},0`)
-				// css.polygon.setAttribute("points",isMobile ? 
-				// 	`0,${height * 2/3 - counter} ${width},${height * 1/6 - counter} ${width},${height * 1/2} 0,${height}` :
-				// 	`${(width * 2/3) - counter},0  ${(width * 1/6) - counter},${height} ${width * 1/2},${height} ${width},0`)
 
 				if(counter < 100){
 					html.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + 100 - counter)
@@ -288,6 +302,28 @@
 				clearInterval(interval)
 			}
 			
+		}
+	}
+
+	function expandHTML(html,css,js,width,height,isMobile,svg){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		svg.removeChild(html.group)
+		svg.appendChild(html.group)
+
+		function frame(){
+			
+			if( (isMobile ? height : width) * 1/6 + counter  <= (isMobile ? height : width) ){
+				counter+= 5
+
+				html.polygon.setAttribute("points",isMobile ? 
+					`0,0 0,${height * 2/3 + counter} ${width},${height * 1/6 + counter} ${width},0`:
+					`0,0 0,${height} ${(width * 1/6) + counter},${height} ${(width * 2/3) + counter},0`)
+				
+			}else{
+				clearInterval(interval)
+			}
 		}
 	}
 
@@ -305,12 +341,6 @@
 				css.polygon.setAttribute("points",isMobile ? 
 					`0,${height * 1/2 - counter} ${width},0 ${width},${height * 1/2 + counter} 0,${height}` :
 					`${width * 1/2 - counter},0  0,${height} ${width * 1/2 + counter},${height} ${width},0`)
-				// html.polygon.setAttribute("points",isMobile ? 
-				// 	`0,0 0,${height * 1/2 - counter} ${width},0` :
-				// 	`0,0 0,${height} ${width * 1/2 - counter},0`)
-				// js.polygon.setAttribute("points",isMobile ? 
-				// 	`0,${height} ${width},${height * 1/2 + counter}, ${width},${height}` :
-				// 	`${width},0  ${width * 1/2 + counter},${height} ${width},${height}`);
 
 				if(counter < 100){
 					css.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + counter)
@@ -318,8 +348,6 @@
 					css.img.setAttribute("x",(width * 1/2 - ((width * (isMobile ? 1/3 : 1/4)) + counter)/2))
 					css.img.setAttribute("y",(height * 1/2 - ((height * (isMobile ? 1/3 : 1/2)) + counter)/2))
 				}
-
-				
 				
 			}else{
 				clearInterval(interval)
@@ -339,12 +367,6 @@
 				css.polygon.setAttribute("points",isMobile ? 
 				 `0,${height * 1/3 + counter} ${width},0 ${width},${height * 4/6 - counter} 0,${height}` : 
 				 `${width * 1/3 + counter},0  0,${height} ${width * 2/3 - counter},${height} ${width},0`)
-				// html.polygon.setAttribute("points",isMobile ? 
-				//  `0,0 0,${height * 1/3 + counter} ${width},0` : 
-				//  `0,0 0,${height} ${width * 1/3 + counter},0`)
-				// js.polygon.setAttribute("points", isMobile ? 
-				//  `0,${height} ${width},${height * 4/6 - counter}, ${width},${height}`:
-				//  `${width},0  ${width * 2/3 - counter},${height} ${width},${height}`);
 
 				if(counter < 100){
 					css.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + 100 - counter)
@@ -364,23 +386,17 @@
 		interval = setInterval(frame,5)
 		let counter = 0
 
-		// svg.removeChild(css.group)
-		// svg.appendChild(css.group)
+		svg.removeChild(css.group)
+		svg.appendChild(css.group)
 
 		function frame(){
 			
 			if( (isMobile ? height : width) * 4/6 + counter  <= (isMobile ? height : width) ){
-				counter+= 2
+				counter+= 5
 
 				css.polygon.setAttribute("points",isMobile ? 
-					`0,${height * 1/2 - counter} ${width},0 ${width},${height * 1/2 + counter} 0,${height}` :
-					`${width * 1/2 - counter},0  0,${height} ${width * 1/2 + counter},${height} ${width},0`)
-				// html.polygon.setAttribute("points",isMobile ? 
-				// 	`0,0 0,${height * 1/2 - counter} ${width},0` :
-				// 	`0,0 0,${height} ${width * 1/2 - counter},0`)
-				// js.polygon.setAttribute("points",isMobile ? 
-				// 	`0,${height} ${width},${height * 1/2 + counter}, ${width},${height}` :
-				// 	`${width},0  ${width * 1/2 + counter},${height} ${width},${height}`);
+					`0,${height * 1/3 - counter} ${width},0 ${width},${height * 4/6 + counter} 0,${height}` :
+					`${width * 1/3 - counter},0  0,${height} ${width * 4/6 + counter},${height} ${width},0`)
 				
 			}else{
 				clearInterval(interval)
@@ -402,12 +418,6 @@
 				js.polygon.setAttribute("points",isMobile ? 
 					`0,${height} 0,${height - counter} ${width},${height * 1/2 - counter}, ${width},${height}` : 
 					`${width},0 ${width - counter},0  ${width * 1/2 - counter},${height} ${width},${height}`);
-				// css.polygon.setAttribute("points", isMobile ? 
-				// 	`0,${height * 1/2} ${width},0 ${width},${height * 1/2 - counter} 0,${height - counter}` : 
-				// 	`${width * 1/2},0  0,${height} ${width * 1/2 - counter},${height} ${width -counter},0`);
-				// html.polygon.setAttribute("points",isMobile ? 
-				// 	`0,0 0,${height * 1/2} ${width},0` :
-				//     `0,0 0,${height} ${width * 1/2},0`);
 
 				if(counter < 100){
 					js.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + counter)
@@ -434,9 +444,6 @@
 				js.polygon.setAttribute("points",isMobile ? 
 					`0,${height} 0,${height * 5/6 + counter} ${width},${height * 1/3 + counter}, ${width},${height}`:
 					`${width},0 ${width * 5/6 + counter},0  ${width * 1/3 + counter},${height} ${width},${height}`);
-				// css.polygon.setAttribute("points",isMobile ? 
-				// 	`0,${height * 1/2} ${width},0 ${width},${height * 1/3 + counter} 0,${height * 5/6 + counter}` : 
-				//     `${width * 1/2},0  0,${height} ${width * 1/3 + counter},${height} ${width * 5/6 + counter},0`);
 				
 				if(counter < 100){
 					js.img.setAttribute("width", (isMobile ? width * 1/3 : width * 1/4) + 100 - counter)
@@ -450,6 +457,29 @@
 			
 		}
 	}
+
+	function expandJS(html,css,js,width,height,isMobile,svg){
+		interval = setInterval(frame,5)
+		let counter = 0
+
+		svg.removeChild(js.group)
+		svg.appendChild(js.group)
+
+		function frame(){
+			
+			if( (isMobile ? height : width) * 5/6 - counter  >= 0 ){
+				counter+= 5
+
+				js.polygon.setAttribute("points",isMobile ? 
+					`0,${height} 0,${height * 5/6 - counter} ${width},${height * 1/3 - counter}, ${width},${height}`:
+					`${width},0 ${width * 5/6 - counter},0  ${width * 1/3 - counter},${height} ${width},${height}`);
+				
+			}else{
+				clearInterval(interval)
+			}
+		}
+	}
+
 
 
 </script>
