@@ -53,19 +53,16 @@ class Card{
 
 	resize(type,parent,parentSize,step,condition1,condition2,pivots,transformOrigin){
 
-		if(type == "grow"){
+		if(type == "grow" || type == "expand"){
 			parent.removeChild(this.group)
 			parent.appendChild(this.group)
 		}
-
 		
 		let counter = 0
 		let polygon = this.polygon
 		let img = this.img
 		let originals = this.originalValues
-		interval = setInterval(frame,5)
-		
-		
+		interval = setInterval(frame,5)	
 
 		function frame(){
 			if(condition1 + counter <= condition2){
@@ -81,19 +78,21 @@ class Card{
 
 				polygon.setAttribute("points", Card.pointsToString(array))
 
-				if(counter < 150 && +(img.getAttribute("width")) >= originals().imgWidth * (type == "shrink" ? 1 : -1) && +(img.getAttribute("height")) >= originals().imgHeight * (type == "shrink" ? 1 : -1)){
-					img.setAttribute("width", +(img.getAttribute("width")) + (type == "shrink" ? -1 : 1) * counter * 0.02)
-					img.setAttribute("height", +(img.getAttribute("height")) +  (type == "shrink" ? -1 : 1) * counter * 0.02)
-					if(transformOrigin == 'center'){
-						img.setAttribute("x", +(img.getAttribute("x")) + (type == "shrink" ? 1 : -1) * counter * 0.02 / 2)
-						img.setAttribute("y", +(img.getAttribute("y")) + (type == "shrink" ? 1 : -1) * counter * 0.02 / 2)
-					}else if( transformOrigin == 'right-bottom'){
-						img.setAttribute("x", +(img.getAttribute("x")) + (type == "shrink" ? 1 : -1) * counter * 0.02)
-						img.setAttribute("y", +(img.getAttribute("y")) + (type == "shrink" ? 1 : -1) * counter * 0.02)
-					}
-					
-				}
+				if(type == "grow" || type == "shrink"){
 
+					if(counter < 150 && +(img.getAttribute("width")) >= originals().imgWidth * (type == "shrink" ? 1 : -1) && +(img.getAttribute("height")) >= originals().imgHeight * (type == "shrink" ? 1 : -1)){
+						img.setAttribute("width", +(img.getAttribute("width")) + (type == "shrink" ? -1 : 1) * counter * 0.02)
+						img.setAttribute("height", +(img.getAttribute("height")) +  (type == "shrink" ? -1 : 1) * counter * 0.02)
+						if(transformOrigin == 'center'){
+							img.setAttribute("x", +(img.getAttribute("x")) + (type == "shrink" ? 1 : -1) * counter * 0.02 / 2)
+							img.setAttribute("y", +(img.getAttribute("y")) + (type == "shrink" ? 1 : -1) * counter * 0.02 / 2)
+						}else if( transformOrigin == 'right-bottom'){
+							img.setAttribute("x", +(img.getAttribute("x")) + (type == "shrink" ? 1 : -1) * counter * 0.02)
+							img.setAttribute("y", +(img.getAttribute("y")) + (type == "shrink" ? 1 : -1) * counter * 0.02)
+						}
+						
+					}
+				}
 			}else{
 				clearInterval(interval)
 			}
@@ -108,6 +107,5 @@ class Card{
 		return points.split(" ").map(e => e.split(",").map(e => +(e)))
 	}
 }
-
 
 

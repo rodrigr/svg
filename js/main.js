@@ -1,10 +1,15 @@
 let mobile = innerWidth < 720
+const closeTag = document.createElement('SPAN')
+closeTag.innerText = 'X'
+closeTag.id = 'close-tag'
+
 homeScreen(mobile)
-
-window.addEventListener("resize",() => {
-
+closeTag.addEventListener('click',() => {
 	mobile = innerWidth < 720 
-
+	homeScreen(mobile)
+})
+window.addEventListener("resize",() => {
+	mobile = innerWidth < 720 
 	homeScreen(mobile)
 })
 
@@ -15,7 +20,10 @@ function homeScreen(isMobile){
 	wrapper.innerHTML = ""
 	let width = wrapper.offsetWidth
 	let height = wrapper.offsetHeight
-
+	if(document.getElementById("closeTag")){
+	 	wrapper.removeChild(closeTag)
+	}
+	
 	//SVG
 
 	let svg = document.createElementNS('http://www.w3.org/2000/svg','svg')		
@@ -59,6 +67,11 @@ function homeScreen(isMobile){
 		height * 5/6 - (height * (isMobile ? 1/3 : 7/10))/2
 		)
 
+	//Styles
+	html.group.setAttribute("fill-opacity",0.6)
+	css.group.setAttribute("fill-opacity",0.6)
+	js.group.setAttribute("fill-opacity",0.6)
+
 	//DOM Insertion
 
 	svg.appendChild(html.group)
@@ -69,17 +82,23 @@ function homeScreen(isMobile){
 
 	//Event Handling
 
-	html.group.addEventListener('mouseover',htmlGrow)
-	html.group.addEventListener('mouseout',htmlShrink)
-	html.group.addEventListener('click',htmlExpand)
+	addListeners()
 
-	css.group.addEventListener('mouseover',cssGrow)
-	css.group.addEventListener('mouseout',cssShrink)
-	css.group.addEventListener('click',cssExpand)	
+	function addListeners(){
+		html.group.addEventListener('mouseover',htmlGrow)
+		html.group.addEventListener('mouseout',htmlShrink)
+		html.group.addEventListener('click',htmlExpand)
 
-	js.group.addEventListener('mouseover',jsGrow)
-	js.group.addEventListener('mouseout',jsShrink)
-	js.group.addEventListener('click',jsExpand)
+		css.group.addEventListener('mouseover',cssGrow)
+		css.group.addEventListener('mouseout',cssShrink)
+		css.group.addEventListener('click',cssExpand)	
+
+		js.group.addEventListener('mouseover',jsGrow)
+		js.group.addEventListener('mouseout',jsShrink)
+		js.group.addEventListener('click',jsExpand)
+	}
+
+	
 
 	function removeListeners(){
 		html.group.removeEventListener('mouseover',htmlGrow)
@@ -97,9 +116,11 @@ function homeScreen(isMobile){
 
 	function htmlGrow(){
 		clearInterval(interval)
-		html.reset('img')
-		css.reset('img')
-		js.reset('img')
+		html.group.setAttribute("fill-opacity",1)
+		html.reset()
+		css.reset()
+		js.reset()
+		removeListeners()
 		html.resize(
 			"grow",
 			svg,
@@ -109,10 +130,13 @@ function homeScreen(isMobile){
 			(isMobile ? height : width) * 2/3,
 			isMobile ? {1:{1:{fraction: 1/2,counter: 1}}, 2:{1:{fraction: 0,counter: 1}}} : {2:{0:{fraction: 0,counter: 1}}, 3:{0:{fraction: 1/2,counter: 1}}},
 			'left-top')
+		addListeners()
 	}
 
 	function htmlShrink(){
 		clearInterval(interval)
+		html.group.setAttribute("fill-opacity",0.6)
+		removeListeners()
 		html.resize(
 			"shrink",
 			svg,
@@ -122,26 +146,34 @@ function homeScreen(isMobile){
 			(isMobile ? height : width) * 2/3,
 			isMobile ? {1:{1:{fraction: 2/3,counter: -1}}, 2:{1:{fraction: 1/6,counter: -1}}} : {2:{0:{fraction: 1/6,counter: -1}}, 3:{0:{fraction: 2/3,counter: -1}}},
 			"left-top")
+		addListeners()
 	}
 	
 	function htmlExpand(){
 		clearInterval(interval)
-		expandHTML(html,
-			css,
-			js,
-			width,
-			height,
-			isMobile,
-			svg
-			)
+		html.group.setAttribute("fill-opacity",0.6)
+		css.group.setAttribute("display","none")
+		js.group.setAttribute("display","none")
 		removeListeners()
+		html.resize(
+			'expand',
+			svg,
+			isMobile ? height: width,
+			5,
+			(isMobile ? height : width) * 1/6,
+			(isMobile ? height : width),
+			isMobile ? {1:{1:{fraction: 2/3,counter: 1}}, 2:{1:{fraction: 1/6,counter: 1}}} : {2:{0:{fraction: 1/6,counter: 1}}, 3:{0:{fraction: 2/3,counter: 1}}},
+			"none")
+		wrapper.appendChild(closeTag)
 	}
 
 	function cssGrow(){
 		clearInterval(interval)
-		html.reset('img')
-		css.reset('img')
-		js.reset('img')
+		css.group.setAttribute("fill-opacity",1)
+		html.reset()
+		css.reset()
+		js.reset()
+		removeListeners()
 		css.resize(
 			"grow",
 			svg,
@@ -151,10 +183,13 @@ function homeScreen(isMobile){
 			(isMobile ? height : width) * 2/3,
 			isMobile ? {0:{1:{fraction: 1/2,counter: -1}}, 2:{1:{fraction: 1/2,counter: 1}}} : {0:{0:{fraction: 1/2,counter: -1}}, 2:{0:{fraction: 1/2,counter: 1}}},
 			'center')
+		addListeners()
 	}	
 
 	function cssShrink(){
 		clearInterval(interval)
+		css.group.setAttribute("fill-opacity",0.6)
+		removeListeners()
 		css.resize(
 			"shrink",
 			svg,
@@ -164,28 +199,33 @@ function homeScreen(isMobile){
 			(isMobile ? height : width) *  1/2,
 			isMobile ? {0:{1:{fraction: 1/3,counter: 1}}, 2:{1:{fraction: 4/6,counter: -1}}} : {0:{0:{fraction: 1/3,counter: 1}}, 2:{0:{fraction: 2/3,counter: -1}}},
 			'center')
+		addListeners()
 	}
 
 	function cssExpand(){
 		clearInterval(interval)
-		expandCSS(html,
-			css,
-			js,
-			width,
-			height,
-			isMobile,
-			svg
-			)
+		css.group.setAttribute("fill-opacity",0.6)
+		html.group.setAttribute("display","none")
+		js.group.setAttribute("display","none")
 		removeListeners()
+		css.resize(
+			"expand",
+			svg,
+			isMobile ? height: width,
+			5,
+			(isMobile ? height : width) * 4/6,
+			(isMobile ? height : width) - 2,
+			isMobile ? {0:{1:{fraction: 1/3,counter: -1}}, 2:{1:{fraction: 4/6,counter: 1}}} : {0:{0:{fraction: 1/3,counter: -1}}, 2:{0:{fraction: 4/6,counter: 1}}},
+			"none")
+		wrapper.appendChild(closeTag)
 	}
-
-	
 
 	function jsGrow(){
 		clearInterval(interval)
-		html.reset('img')
-		css.reset('img')
-		js.reset('img')
+		js.group.setAttribute("fill-opacity",1)
+		html.reset()
+		css.reset()
+		js.reset()
 		js.resize(
 			"grow",
 			svg,
@@ -197,10 +237,9 @@ function homeScreen(isMobile){
 			'right-bottom')
 	}
 
-	
-
 	function jsShrink(){
 		clearInterval(interval)
+		js.group.setAttribute("fill-opacity",0.6)
 		js.resize(
 			'shrink',
 			svg,
@@ -212,85 +251,22 @@ function homeScreen(isMobile){
 			'right-bottom')
 	}
 
-	
-
 	function jsExpand(){
 		clearInterval(interval)
-		expandJS(html,
-			css,
-			js,
-			width,
-			height,
-			isMobile,
-			svg
-			)
+		js.group.setAttribute("fill-opacity",0.6)
+		html.group.setAttribute("display","none")
+		css.group.setAttribute("display","none")
 		removeListeners()
+		js.resize(
+			'expand',
+			svg,
+			isMobile ? height : width,
+			5,
+			0,
+			(isMobile ? height : width) * 5/6,
+			isMobile ? {1:{1:{fraction: 5/6,counter: -1}}, 2:{1:{fraction: 1/3,counter: -1}}} : {1:{0:{fraction: 5/6,counter: -1}}, 2:{0:{fraction: 1/3,counter: -1}}},
+			"none")
+		wrapper.appendChild(closeTag)
 	}
 
-}
-
-function expandHTML(html,css,js,width,height,isMobile,svg){
-	interval = setInterval(frame,5)
-	let counter = 0
-
-	svg.removeChild(html.group)
-	svg.appendChild(html.group)
-
-	function frame(){
-		
-		if( (isMobile ? height : width) * 1/6 + counter  <= (isMobile ? height : width) ){
-			counter+= 5
-
-			html.polygon.setAttribute("points",isMobile ? 
-				`0,0 0,${height * 2/3 + counter} ${width},${height * 1/6 + counter} ${width},0`:
-				`0,0 0,${height} ${(width * 1/6) + counter},${height} ${(width * 2/3) + counter},0`)
-			
-		}else{
-			clearInterval(interval)
-		}
-	}
-}
-
-function expandCSS(html,css,js,width,height,isMobile,svg){
-	interval = setInterval(frame,5)
-	let counter = 0
-
-	svg.removeChild(css.group)
-	svg.appendChild(css.group)
-
-	function frame(){
-		
-		if( (isMobile ? height : width) * 4/6 + counter  <= (isMobile ? height : width) ){
-			counter+= 5
-
-			css.polygon.setAttribute("points",isMobile ? 
-				`0,${height * 1/3 - counter} ${width},0 ${width},${height * 4/6 + counter} 0,${height}` :
-				`${width * 1/3 - counter},0 0,${height} ${width * 4/6 + counter},${height} ${width},0`)
-			
-		}else{
-			clearInterval(interval)
-		}
-	}
-}
-
-function expandJS(html,css,js,width,height,isMobile,svg){
-	interval = setInterval(frame,5)
-	let counter = 0
-
-	svg.removeChild(js.group)
-	svg.appendChild(js.group)
-
-	function frame(){
-		
-		if( (isMobile ? height : width) * 5/6 - counter  >= 0 ){
-			counter+= 5
-
-			js.polygon.setAttribute("points",isMobile ? 
-				`0,${height} 0,${height * 5/6 - counter} ${width},${height * 1/3 - counter} ${width},${height}`:
-				`${width},0 ${width * 5/6 - counter},0 ${width * 1/3 - counter},${height} ${width},${height}`);
-			
-		}else{
-			clearInterval(interval)
-		}
-	}
 }
