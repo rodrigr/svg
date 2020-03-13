@@ -3,10 +3,12 @@
 	font-family: 'Roboto', sans-serif;
 }
 
-#test{
+#wrapper{
 	width: 100vw;
 	height: 80vh;
 	position: relative;
+	background-image: url("../img/background.jpg");
+	background-size: cover;
 }
 
 #close-tag{
@@ -19,7 +21,7 @@
 	font-size: 1.5em;
 }
 
-.group{
+.group image{
 	cursor: pointer;
 }
 
@@ -38,9 +40,4 @@
 
 #js polygon{
 	fill: #f0db4f;
-}
-
-#test{
-	background-image: url("../img/background.jpg");
-	background-size: cover;
 }

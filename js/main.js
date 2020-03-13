@@ -16,7 +16,7 @@ window.addEventListener("resize",() => {
 
 
 function homeScreen(isMobile){
-	let wrapper = document.getElementById("test")
+	let wrapper = document.getElementById("wrapper")
 	wrapper.innerHTML = ""
 	let width = wrapper.offsetWidth
 	let height = wrapper.offsetHeight
@@ -85,33 +85,46 @@ function homeScreen(isMobile){
 	addListeners()
 
 	function addListeners(){
-		html.group.addEventListener('mouseover',htmlGrow)
-		html.group.addEventListener('mouseout',htmlShrink)
-		html.group.addEventListener('click',htmlExpand)
 
-		css.group.addEventListener('mouseover',cssGrow)
-		css.group.addEventListener('mouseout',cssShrink)
-		css.group.addEventListener('click',cssExpand)	
+		if(!isMobile){
+			html.img.addEventListener('mouseover',htmlGrow)
+			html.img.addEventListener('mouseout',htmlShrink)
+		}
+		isMobile ?  html.group.addEventListener('click',htmlExpand) : html.img.addEventListener('click',htmlExpand)
 
-		js.group.addEventListener('mouseover',jsGrow)
-		js.group.addEventListener('mouseout',jsShrink)
-		js.group.addEventListener('click',jsExpand)
+		if(!isMobile){
+			css.img.addEventListener('mouseover',cssGrow)
+			css.img.addEventListener('mouseout',cssShrink)
+		}
+		isMobile ? css.group.addEventListener('click',cssExpand) : css.img.addEventListener('click',cssExpand)	
+
+		if(!isMobile){
+			js.img.addEventListener('mouseover',jsGrow)
+			js.img.addEventListener('mouseout',jsShrink)
+		}
+		isMobile ? js.group.addEventListener('click',jsExpand) : js.img.addEventListener('click',jsExpand)
 	}
 
 	
 
 	function removeListeners(){
-		html.group.removeEventListener('mouseover',htmlGrow)
-		html.group.removeEventListener('mouseout',htmlShrink)
-		html.group.removeEventListener('click',htmlExpand)
+		if(!isMobile){
+			html.img.removeEventListener('mouseover',htmlGrow)
+			html.img.removeEventListener('mouseout',htmlShrink)
+		}
+		isMobile ? html.group.removeEventListener('click',htmlExpand) : html.img.removeEventListener('click',htmlExpand)
 
-		css.group.removeEventListener('mouseover',cssGrow)
-		css.group.removeEventListener('mouseout',cssShrink)
-		css.group.removeEventListener('click',cssExpand)	
+		if (!isMobile){
+			css.img.removeEventListener('mouseover',cssGrow)
+			css.img.removeEventListener('mouseout',cssShrink)
+		}
+		isMobile ? css.group.removeEventListener('click',cssExpand) : css.img.removeEventListener('click',cssExpand)	
 
-		js.group.removeEventListener('mouseover',jsGrow)
-		js.group.removeEventListener('mouseout',jsShrink)
-		js.group.removeEventListener('click',jsExpand)
+		if(!isMobile){
+			js.img.removeEventListener('mouseover',jsGrow)
+			js.img.removeEventListener('mouseout',jsShrink)
+		}
+		isMobile ? js.group.removeEventListener('click',jsExpand) : js.img.removeEventListener('click',jsExpand)
 	}
 
 	function htmlGrow(){
