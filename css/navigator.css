@@ -7,7 +7,7 @@
 	background-color: rgba(255,69,0,.7);
 	border-radius: 10px;
 	background-image: url('../img/menu-icon.png');
-	background-size: 35px 35px;
+	background-size: 35px;
 	background-position: center;
 	background-repeat: no-repeat;
 	cursor: pointer;
@@ -21,6 +21,10 @@
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0,0,0,.7);
+	background-image: url("../img/right-arrow.png");
+	background-position: 2em center;
+	background-size: 50px;
+	background-repeat: no-repeat;
 	position: absolute;
 	top:0;
 	left: 0;
