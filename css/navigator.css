@@ -1,0 +1,123 @@
+#menu-icon{
+	position: fixed;
+	top: 1em;
+	right: 1em;
+	height: 50px;
+	width: 50px;
+	background-color: rgba(255,69,0,.7);
+	border-radius: 10px;
+	background-image: url('../img/menu-icon.png');
+	background-size: 35px 35px;
+	background-position: center;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+#menu-icon.hide{
+	display: none;
+}
+
+.overlay{
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,.5);
+	position: absolute;
+	top:0;
+	left: 0;
+}
+
+.overlay.hide{
+	display: none;
+}
+
+#sidebar{
+	opacity: .9;
+	background-color: #ff4500;
+	height: 100vh;
+	width: 70vw;
+	position: absolute;
+	right: 0;
+	z-index: 999;
+	border-radius: 10px 0 0 10px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-around;
+	align-items: center;
+	display: none;
+}
+
+#menu{
+	height: inherit;
+	display: flex;
+	width: 100%;
+	flex-flow: column nowrap;
+	justify-content: flex-end;
+	padding-bottom: 3em;
+}
+
+#sidebar a{
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+	padding: 1em 0;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	width: inherit;
+}
+
+#menu img{
+	width: 35px;
+	margin: 0 .5em;
+}
+
+#menu a:hover{
+	background-color: rgba(255,255,255,.5)
+}
+
+#mindhub-logo{
+	width: 100%;
+}
+
+#mindhub-icon{
+	display: none;
+}
+
+#menu input{
+	width: 90%;
+	background: rgba(255,255,255,0.7);
+	border: 3px solid #ffa000;
+	border-radius: 5px;
+}
+
+.showNavbar{
+	display: flex !important;
+	animation: showNavbar 1s both;
+	transform-origin: right;
+}
+
+@media only screen and (min-width: 720px){
+	#sidebar{
+		width: 50px;
+		display: flex;
+	}
+	#sidebar #menu span.hide{
+		display: none;
+	}
+	#sidebar>a:first-child img.hide{
+		display: none;
+	}
+	#mindhub-icon{
+		display: block;
+		width: 100%;
+	}
+}
+
+@keyframes showNavbar{
+	from{
+		transform: scaleX(0);
+	}to{
+		transform: scaleX(1);
+	}
+}

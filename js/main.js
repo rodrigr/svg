@@ -3,13 +3,16 @@ const closeTag = document.createElement('SPAN')
 closeTag.innerText = 'X'
 closeTag.id = 'close-tag'
 
+navigate(mobile)
 homeScreen(mobile)
+
 closeTag.addEventListener('click',() => {
 	mobile = innerWidth < 720 
 	homeScreen(mobile)
 })
 window.addEventListener("resize",() => {
 	mobile = innerWidth < 720 
+	navigate(mobile)
 	homeScreen(mobile)
 })
 

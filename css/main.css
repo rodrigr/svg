@@ -14,7 +14,7 @@
 #close-tag{
 	position: absolute;
 	top: 1em;
-	right: 1em;
+	left: 1em;
 	cursor: pointer;
 	color: white;
 	font-weight: bold;
