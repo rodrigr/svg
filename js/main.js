@@ -3,7 +3,7 @@ const closeTag = document.createElement('SPAN')
 closeTag.innerText = 'X'
 closeTag.id = 'close-tag'
 
-navigate(mobile)
+document.getElementById("sidebar") ? navigate(mobile) : null
 homeScreen(mobile)
 
 closeTag.addEventListener('click',() => {
@@ -12,7 +12,7 @@ closeTag.addEventListener('click',() => {
 })
 window.addEventListener("resize",() => {
 	mobile = innerWidth < 720 
-	navigate(mobile)
+	document.getElementById("sidebar") ? navigate(mobile) : null
 	homeScreen(mobile)
 })
 
